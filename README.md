@@ -6,7 +6,7 @@ Based on an [example code](https://gist.github.com/Ivoah/477775d13e142b2c89ba) b
 
 ## Description
 
-Provides 2 classes for storing, [Polyhedron](./lib/3d/polyhedron.lua) and [Wireframe](./lib/3d/wireframe.lua), with similar APIs but different internal structures.
+Provides 2 classes for storing & manipulating 3D objects, [Polyhedron](./lib/3d/polyhedron.lua) and [Wireframe](./lib/3d/wireframe.lua), with similar APIs but different internal structures.
 
 `Polyhedron` has a notion of faces composed of vertices. It is more suited for importing 3D models.
 

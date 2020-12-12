@@ -18,17 +18,22 @@
 
 
 -- ------------------------------------------------------------------------
--- init
+-- requires
 
 local Wireframe = include('lib/3d/wireframe')
-local Polyhedron = include('lib/3d/polyhedron')
 
 local draw_mode = include('lib/3d/enums/draw_mode')
 local p8 = include('lib/p8')
 
--- local inspect = include('rpmate/lib/inspect')
--- print(inspect(debug.getinfo(1)))
 
+-- ------------------------------------------------------------------------
+-- conf
+
+local fps = 30
+
+
+-- ------------------------------------------------------------------------
+-- init
 
 function init()
   screen.aa(1)
@@ -36,8 +41,6 @@ function init()
   screen.line_width(1)
 end
 
-local fps = 60
--- local fps = 5
 redraw_clock = clock.run(
   function()
     local step_s = 1 / fps
@@ -54,12 +57,55 @@ end
 -- ------------------------------------------------------------------------
 -- state
 
--- model_filepath = "/home/we/dust/code/3d/model/teapot.obj"
-model_filepath = "/home/we/dust/code/3d/model/octa-color.obj"
-
--- model = Wireframe.new_from_obj(model_filepath)
-model = Polyhedron.new_from_obj(model_filepath)
-
+model = Wireframe.new(
+  {{-1,-1,-1}, -- points
+    {-1,-1,1},
+    {1,-1,1},
+    {1,-1,-1},
+    {-1,1,-1},
+    {-1,1,1},
+    {1,1,1},
+    {1,1,-1},
+    {-0.5,-0.5,-0.5}, -- inside
+    {-0.5,-0.5,0.5},
+    {0.5,-0.5,0.5},
+    {0.5,-0.5,-0.5},
+    {-0.5,0.5,-0.5},
+    {-0.5,0.5,0.5},
+    {0.5,0.5,0.5},
+    {0.5,0.5,-0.5}},
+  {{1,2}, -- lines
+    {2,3},
+    {3,4},
+    {4,1},
+    {5,6},
+    {6,7},
+    {7,8},
+    {8,5},
+    {1,5},
+    {2,6},
+    {3,7},
+    {4,8},
+    {8+1,8+2}, -- inside
+    {8+2,8+3},
+    {8+3,8+4},
+    {8+4,8+1},
+    {8+5,8+6},
+    {8+6,8+7},
+    {8+7,8+8},
+    {8+8,8+5},
+    {8+1,8+5},
+    {8+2,8+6},
+    {8+3,8+7},
+    {8+4,8+8},
+    {1,9},--
+    {2,10},
+    {3,11},
+    {4,12},
+    {5,13},
+    {6,14},
+    {7,15},
+    {8,16}})
 
 -- init
 cam = {0,0,-4} -- Initilise the camera position
@@ -135,13 +181,13 @@ function enc(id,delta)
     else
       cam[1] = cam[1] - delta / 10
     end
- elseif id == 3 then
-  if is_shift then
-    a = 3
-  else
-    cam[2] = cam[2] - delta / 10
+  elseif id == 3 then
+    if is_shift then
+      a = 3
+    else
+      cam[2] = cam[2] - delta / 10
+    end
   end
- end
 
   if is_shift then
     local sign = 1
@@ -169,11 +215,6 @@ end
 -- ------------------------------------------------------------------------
 -- MAIN LOOP
 
-function draw_v_as_circle(x, y, col)
-  p8.circfill(x, y, 2, col)
-end
-
-
 function redraw()
   if random_angle then
     t = t - 1 -- Decrease time until next angle change
@@ -196,8 +237,7 @@ function redraw()
 
   p8.cls()
   nClock = os.clock()
-  model:draw(15, draw_mode.POINTS, mult, cam, draw_v_as_circle)
-  model:draw(3, draw_mode.LINES, mult, cam)
+  model:draw(15, draw_mode.LINES, mult, cam)
   -- print("drawing took "..os.clock()-nClock)
 
   -- draw_shape(cube, nil)
