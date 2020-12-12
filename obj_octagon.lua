@@ -129,7 +129,7 @@ end
 function enc(id,delta)
   if id == 1 then
     if is_shift then
-      a = 1
+      a = 3
     else
       cam[3] = cam[3] + delta / 5
     end
@@ -141,7 +141,7 @@ function enc(id,delta)
     end
  elseif id == 3 then
   if is_shift then
-    a = 3
+    a = 1
   else
     cam[2] = cam[2] - delta / 10
   end

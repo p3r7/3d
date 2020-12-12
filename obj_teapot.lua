@@ -29,7 +29,7 @@ local p8 = include('lib/p8')
 -- ------------------------------------------------------------------------
 -- conf
 
-local fps = 5
+local fps = 30
 
 local model_filepath = "/home/we/dust/code/3d/model/teapot.obj"
 local selected_draw_mode = draw_mode.POINTS
@@ -63,7 +63,7 @@ end
 model = Polyhedron.new_from_obj(model_filepath)
 
 -- init
-cam = {0,0,-4} -- Initilise the camera position
+cam = {0,1.2,-5} -- Initilise the camera position
 mult = 64 -- View multiplier
 a = p8.flr(p8.rnd(3))+1 -- Angle for random rotation
 t = p8.flr(p8.rnd(50))+25 -- Time until next angle change
@@ -126,7 +126,7 @@ end
 function enc(id,delta)
   if id == 1 then
     if is_shift then
-      a = 1
+      a = 3
     else
       cam[3] = cam[3] + delta / 5
     end
@@ -138,7 +138,7 @@ function enc(id,delta)
     end
  elseif id == 3 then
   if is_shift then
-    a = 3
+    a = 1
   else
     cam[2] = cam[2] - delta / 10
   end
