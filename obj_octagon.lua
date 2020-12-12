@@ -20,11 +20,12 @@
 -- ------------------------------------------------------------------------
 -- requires
 
+include('lib/3d/utils/core')
+
 local Polyhedron = include('lib/3d/polyhedron')
 -- local Wireframe = include('lib/3d/wireframe')
 
 local draw_mode = include('lib/3d/enums/draw_mode')
-local p8 = include('lib/p8')
 
 
 -- ------------------------------------------------------------------------
@@ -68,8 +69,8 @@ model = Polyhedron.new_from_obj(model_filepath)
 -- init
 cam = {0,0,-4} -- Initilise the camera position
 mult = 64 -- View multiplier
-a = p8.flr(p8.rnd(3))+1 -- Angle for random rotation
-t = p8.flr(p8.rnd(50))+25 -- Time until next angle change
+a = flr(rnd(3))+1 -- Angle for random rotation
+t = flr(rnd(50))+25 -- Time until next angle change
 rot_speed = 0
 rot_speed_a = {0,0,0} -- Independant angle rotation
 
@@ -174,7 +175,13 @@ end
 -- MAIN LOOP
 
 function draw_v_as_circle(x, y, col)
-  p8.circfill(x, y, 2, col)
+  if l then
+    screen.level(l)
+  end
+  local radius = 2
+  screen.move(x + radius, y)
+  screen.circle(x, y, radius)
+  screen.fill()
 end
 
 
@@ -182,8 +189,8 @@ function redraw()
   if random_angle then
     t = t - 1 -- Decrease time until next angle change
     if t <= 0 then -- If t is 0 then change the random angle and restart the timer
-      t = p8.flr(p8.rnd(50))+25 -- Restart timer
-      a = p8.flr(p8.rnd(3))+1 -- Update angle
+      t = flr(rnd(50))+25 -- Restart timer
+      a = flr(rnd(3))+1 -- Update angle
     end
   end
 
@@ -197,15 +204,14 @@ function redraw()
   end
   -- print("rotation took "..os.clock()-nClock)
 
-
-  p8.cls()
+  screen.clear()
   nClock = os.clock()
 
+  model:draw(3, draw_mode.FACES, mult, cam)
+  model:draw(4, draw_mode.LINES, mult, cam)
   model:draw(15, draw_mode.POINTS, mult, cam, draw_v_as_circle)
-  model:draw(3, draw_mode.LINES, mult, cam)
+
   -- print("drawing took "..os.clock()-nClock)
 
-  -- draw_shape(cube, nil)
-
-  p8.flip()
+  screen.update()
 end

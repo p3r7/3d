@@ -20,10 +20,11 @@
 -- ------------------------------------------------------------------------
 -- requires
 
+include('lib/3d/utils/core')
+
 local Wireframe = include('lib/3d/wireframe')
 
 local draw_mode = include('lib/3d/enums/draw_mode')
-local p8 = include('lib/p8')
 
 
 -- ------------------------------------------------------------------------
@@ -110,8 +111,8 @@ model = Wireframe.new(
 -- init
 cam = {0,0,-4} -- Initilise the camera position
 mult = 64 -- View multiplier
-a = p8.flr(p8.rnd(3))+1 -- Angle for random rotation
-t = p8.flr(p8.rnd(50))+25 -- Time until next angle change
+a = flr(rnd(3))+1 -- Angle for random rotation
+t = flr(rnd(50))+25 -- Time until next angle change
 rot_speed = 0
 rot_speed_a = {0,0,0} -- Independant angle rotation
 
@@ -219,8 +220,8 @@ function redraw()
   if random_angle then
     t = t - 1 -- Decrease time until next angle change
     if t <= 0 then -- If t is 0 then change the random angle and restart the timer
-      t = p8.flr(p8.rnd(50))+25 -- Restart timer
-      a = p8.flr(p8.rnd(3))+1 -- Update angle
+      t = flr(rnd(50))+25 -- Restart timer
+      a = flr(rnd(3))+1 -- Update angle
     end
   end
 
@@ -235,12 +236,10 @@ function redraw()
   -- print("rotation took "..os.clock()-nClock)
 
 
-  p8.cls()
+  screen.clear()
   nClock = os.clock()
   model:draw(15, draw_mode.LINES, mult, cam)
   -- print("drawing took "..os.clock()-nClock)
 
-  -- draw_shape(cube, nil)
-
-  p8.flip()
+  screen.update()
 end

@@ -53,8 +53,14 @@ model:draw(level, draw_mode.POINTS)
 Or even pass a custom drawing function:
 
 ```lua
-function draw_v_as_circle(x, y, col)
-  p8.circfill(x, y, 2, col)
+function draw_v_as_circle(x, y, l)
+  if l then
+    screen.level(l)
+  end
+  local radius = 2
+  screen.move(x + radius, y)
+  screen.circle(x, y, radius)
+  screen.fill()
 end
 
 model:draw(level, draw_mode.POINTS, mult, cam, draw_v_as_circle)

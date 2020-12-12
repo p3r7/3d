@@ -2,7 +2,9 @@
 
 local vertex_motion = include('lib/3d/utils/vertex_motion')
 local model_convert = include('lib/3d/utils/model_convert')
-local p8 = include('lib/p8')
+local draw_2d = include('lib/3d/utils/draw_2d')
+
+local inspect = include('lib/inspect')
 
 
 -- ------------------------------------------------------------------------
@@ -13,24 +15,24 @@ local draw_3d = {}
 -- ------------------------------------------------------------------------
 -- VERTEX / POINT
 
-function draw_3d.point(v, col, mult, cam, draw_fn)
-  col = col or 15
+function draw_3d.point(v, l, mult, cam, draw_fn)
+  l = l or 15
   mult = mult or 64
   cam = cam or {0, 0, 0}
-  draw_fn = draw_fn or p8.pset
+  draw_fn = draw_fn or draw_2d.point
   local x, y = vertex_motion.project(v, mult, cam)
-  draw_fn(x, y, col)
+  draw_fn(x, y, l)
 end
 
 
 -- ------------------------------------------------------------------------
 -- LINE
 
-function draw_3d.line(v1, v2, col, mult, cam, draw_fn)
-  col = col or 15
+function draw_3d.line(v1, v2, l, mult, cam, draw_fn)
+  l = l or 15
   mult = mult or 64
   cam = cam or {0, 0, 0}
-  draw_fn = draw_fn or p8.line
+  draw_fn = draw_fn or draw_2d.line
   local x0, y0 = vertex_motion.project(v1, mult, cam)
   local x1, y1 = vertex_motion.project(v2, mult, cam)
   draw_fn(x0, y0, x1, y1, col)
@@ -40,15 +42,20 @@ end
 -- ------------------------------------------------------------------------
 -- FACE
 
--- TODO: allow overrding draw_fn
-function draw_3d.face(f, col, mult, cam, _draw_fn)
-  col = col or 15
+function draw_3d.face(f, l, filled, mult, cam, draw_fn)
+  l = l or 15
   mult = mult or 64
   cam = cam or {0, 0, 0}
+  draw_fn = draw_fn or draw_2d.polygon
   local edges = model_convert.face_2_edges(f)
   for _i, l in ipairs(edges) do
-    draw_3d.line(l[1], l[2], col, mult, cam)
+    local v1, v2 = l[1], l[2]
+    local x0, y0 = vertex_motion.project(v1, mult, cam)
+    local x1, y1 = vertex_motion.project(v2, mult, cam)
+    l[1] = {x0, y0}
+    l[2] = {x1, y1}
   end
+  draw_fn(edges, l, filled)
 end
 
 

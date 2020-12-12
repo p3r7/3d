@@ -1,7 +1,7 @@
 
 
 local axis = include('lib/3d/enums/axis')
-local p8 = include('lib/p8')
+include('lib/3d/utils/core')
 
 
 -- ------------------------------------------------------------------------
@@ -30,8 +30,8 @@ function vertex_motion.rotate(v, a, s)
     x,y,z = 1,2,3
   end
 
-  local new_x = p8.cos(s) * v[x] - p8.sin(s) * v[y]
-  local new_y = p8.sin(s) * v[x] + p8.cos(s) * v[y]
+  local new_x = cos1(s) * v[x] - sin1(s) * v[y]
+  local new_y = sin1(s) * v[x] + cos1(s) * v[y]
 
   v[x] = new_x
   v[y] = new_y

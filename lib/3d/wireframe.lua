@@ -52,18 +52,18 @@ end
 -- ------------------------------------------------------------------------
 -- DRAW
 
-function Wireframe:draw(col, draw_style, mult, cam, draw_fn)
-  col = col or 15
+function Wireframe:draw(l, draw_style, mult, cam, draw_fn)
+  l = l or 15
   draw_style = draw_style or draw_mode.WIRE_FRAME
   mult = mult or 64
   cam = cam or {0, 0, 0}
   if draw_style == draw_mode.POINTS then
     for _i, v in ipairs(self.vertices) do
-      draw_3d.point(v, col, mult, cam, draw_fn)
+      draw_3d.point(v, l, mult, cam, draw_fn)
     end
   elseif draw_style == draw_mode.WIRE_FRAME then
-    for _i, l in ipairs(self.edges) do
-      draw_3d.line(self.vertices[l[1]], self.vertices[l[2]], col, mult, cam, draw_fn)
+    for _i, line in ipairs(self.edges) do
+      draw_3d.line(self.vertices[line[1]], self.vertices[line[2]], l, mult, cam, draw_fn)
     end
   end
 end
