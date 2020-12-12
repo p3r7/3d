@@ -1,4 +1,4 @@
--- obj_import.
+-- wireframe_cube.
 --
 -- @eigen
 --

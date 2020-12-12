@@ -1,4 +1,4 @@
--- obj_import.
+-- obj_teapot.
 --
 -- @eigen
 --
