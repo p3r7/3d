@@ -36,10 +36,10 @@ local axis = include('lib/3d/enums/axis')
 model:rotate(axis.Y, 0.02)
 ```
 
-Drawing can take multiplication coefficient and a camera position:
+Drawing can take a multiplication coefficient and a camera position:
 
 ```lua
-local mult = 64 -- scale up model by x64
+local mult = 64 -- scale up model by 640%
 local cam = {0, 0, -4} -- x, y, z
 model:draw(level, draw_mode.WIREFRAME, mult, cam)
 ```
