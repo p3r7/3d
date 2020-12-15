@@ -1,4 +1,5 @@
 
+include('lib/3d/utils/core')
 local model_parse = include('lib/3d/utils/model_parse')
 local model_convert = include('lib/3d/utils/model_convert')
 local vertex_motion = include('lib/3d/utils/vertex_motion')
@@ -20,7 +21,12 @@ function Polyhedron.new(vertices, faces)
   local p = setmetatable({}, Polyhedron)
 
   p.vertices = vertices
+  p.vertices_count = len(vertices)
   p.faces = faces
+  p.faces_count = len(faces)
+
+  p.translation = {0,0,0}
+  p.rotation = {0,0,0}
 
   return p
 end
@@ -34,30 +40,57 @@ end
 
 
 -- ------------------------------------------------------------------------
--- MOTION
+-- TRANSLATION
 
-function Polyhedron:translate(translation_vector)
+function Polyhedron:translate_axis(axis, translation)
+  self.translation[axis] = self.translation[axis] + translation
   for _i, v in ipairs(self.vertices) do
-    vertex_motion.translate(v, translation_vector)
+    vertex_motion.translate(v, axis, translation)
   end
 end
 
-function Polyhedron:rotate(axis, speed)
+function Polyhedron:translate_by_vector(trans_vec)
+  for a, t in ipairs(trans_vec) do
+    self:translate(a, t)
+  end
+end
+
+function Polyhedron:translate(a1, a2)
+  if a2 == nil and type(a1) == "table" then
+    self:translate_by_vector(a1)
+  else
+    self:translate_axis(a1, a2)
+  end
+end
+
+
+-- ------------------------------------------------------------------------
+-- ROTATION
+
+function Polyhedron:rotate_axis(axis, speed)
+  self.rotation[axis] = self.rotation[axis] + speed
   for _i, v in ipairs(self.vertices) do
     vertex_motion.rotate(v, axis, speed)
+  end
+end
+
+function Polyhedron:rotate_by_vector(rot_vec)
+  for a, s in ipairs(rot_vec) do
+    self:rotate(a, s)
+  end
+end
+
+function Polyhedron:rotate(a1, a2)
+  if a2 == nil and type(a1) == "table" then
+    self:rotate_by_vector(a1)
+  else
+    self:rotate_axis(a1, a2)
   end
 end
 
 
 -- ------------------------------------------------------------------------
 -- DRAW
-
-function table.copy(t)
-  local u = { }
-  for k, v in pairs(t) do u[k] = v end
-  return setmetatable(u, getmetatable(t))
-end
-
 
 function Polyhedron:evaled_face(face)
   local evaled_face = {}
@@ -77,10 +110,10 @@ function Polyhedron:draw(l, draw_style, mult, cam, draw_fn)
       draw_3d.point(v, l, mult, cam, draw_fn)
     end
   elseif draw_style == draw_mode.WIREFRAME then
-   for _i, f in ipairs(self.faces) do
-    local evaled_f = self:evaled_face(f)
-    draw_3d.face(evaled_f, l, false, mult, cam, draw_fn)
-   end
+    for _i, f in ipairs(self.faces) do
+      local evaled_f = self:evaled_face(f)
+      draw_3d.face(evaled_f, l, false, mult, cam, draw_fn)
+    end
   elseif draw_style == draw_mode.FACES then
     local sign = -1
     local l = 15

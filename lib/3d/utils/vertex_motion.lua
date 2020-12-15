@@ -12,8 +12,8 @@ local vertex_motion = {}
 -- ------------------------------------------------------------------------
 -- TRANSLATION
 
-function vertex_motion.translate(v, t)
-  v = {v[1]+t[1], v[2]+t[2], v[3]+t[3]}
+function vertex_motion.translate(v, a, t)
+  v[a] = v[a] + t
 end
 
 

@@ -26,6 +26,12 @@ end
 -- ------------------------------------------------------------------------
 -- TABLE
 
+function table.copy(t)
+  local u = { }
+  for k, v in pairs(t) do u[k] = v end
+  return setmetatable(u, getmetatable(t))
+end
+
 function len(T)
   local count = 0
   for _ in pairs(T) do count = count + 1 end
