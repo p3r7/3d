@@ -238,7 +238,7 @@ function redraw()
 
   screen.clear()
   nClock = os.clock()
-  model:draw(15, draw_mode.LINES, mult, cam)
+  model:draw(15, draw_mode.WIREFRAME, mult, cam)
   -- print("drawing took "..os.clock()-nClock)
 
   screen.update()

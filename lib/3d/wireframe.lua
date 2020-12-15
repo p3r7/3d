@@ -61,10 +61,10 @@ function Wireframe:draw(l, draw_style, mult, cam, draw_fn)
     for _i, v in ipairs(self.vertices) do
       draw_3d.point(v, l, mult, cam, draw_fn)
     end
-  elseif draw_style == draw_mode.WIRE_FRAME then
-    for _i, line in ipairs(self.edges) do
-      draw_3d.line(self.vertices[line[1]], self.vertices[line[2]], l, mult, cam, draw_fn)
-    end
+  elseif draw_style == draw_mode.WIREFRAME then
+   for _i, line in ipairs(self.edges) do
+    draw_3d.line(self.vertices[line[1]], self.vertices[line[2]], l, mult, cam, draw_fn)
+   end
   end
 end
 

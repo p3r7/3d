@@ -208,7 +208,7 @@ function redraw()
   nClock = os.clock()
 
   model:draw(3, draw_mode.FACES, mult, cam)
-  model:draw(4, draw_mode.LINES, mult, cam)
+  model:draw(4, draw_mode.WIREFRAME, mult, cam)
   model:draw(15, draw_mode.POINTS, mult, cam, draw_v_as_circle)
 
   -- print("drawing took "..os.clock()-nClock)
