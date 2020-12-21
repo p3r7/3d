@@ -63,5 +63,6 @@ function draw_v_as_circle(x, y, l)
   screen.fill()
 end
 
-model:draw(level, draw_mode.POINTS, mult, cam, draw_v_as_circle)
+model:draw(level, draw_mode.POINTS, mult, cam,
+           {point_draw_fn = draw_v_as_circle})
 ```

@@ -91,18 +91,20 @@ end
 -- ------------------------------------------------------------------------
 -- DRAW
 
-function Wireframe:draw(l, draw_style, mult, cam, draw_fn)
+function Wireframe:draw(l, draw_style, mult, cam, props)
   l = l or 15
   draw_style = draw_style or draw_mode.WIREFRAME
   mult = mult or 64
   cam = cam or {0, 0, 0}
-  if draw_style == draw_mode.POINTS then
+  props = props or {}
+  if draw_style & draw_mode.POINTS ~= 0 then
     for _i, v in ipairs(self.vertices) do
-      draw_3d.point(v, l, mult, cam, draw_fn)
+      draw_3d.point(v, props['point_level'] or l, mult, cam, draw_fn)
     end
-  elseif draw_style == draw_mode.WIREFRAME then
+  end
+  if draw_style & draw_mode.WIREFRAME ~= 0 then
     for _i, line in ipairs(self.edges) do
-      draw_3d.line(self.vertices[line[1]], self.vertices[line[2]], l, mult, cam, draw_fn)
+      draw_3d.line(self.vertices[line[1]], self.vertices[line[2]], props['line_level'] or l, mult, cam, props['lines_draw_fn'])
     end
   end
 end

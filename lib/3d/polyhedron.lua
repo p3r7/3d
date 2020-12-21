@@ -100,27 +100,30 @@ function Polyhedron:evaled_face(face)
   return evaled_face
 end
 
-function Polyhedron:draw(l, draw_style, mult, cam, draw_fn)
+function Polyhedron:draw(l, draw_style, mult, cam, props)
   l = l or 15
   draw_style = draw_style or draw_mode.WIREFRAME
   mult = mult or 64
   cam = cam or {0, 0, 0}
-  if draw_style == draw_mode.POINTS then
+  props = props or {}
+  if draw_style & draw_mode.POINTS ~= 0 then
     for _i, v in ipairs(self.vertices) do
-      draw_3d.point(v, l, mult, cam, draw_fn)
+      draw_3d.point(v, props['point_level'] or l, mult, cam, props['point_draw_fn'])
     end
-  elseif draw_style == draw_mode.WIREFRAME then
+  end
+  if draw_style & draw_mode.WIREFRAME ~= 0 then
     for _i, f in ipairs(self.faces) do
       local evaled_f = self:evaled_face(f)
-      draw_3d.face(evaled_f, l, false, mult, cam, draw_fn)
+      draw_3d.face(evaled_f, props['line_level'] or l, false, mult, cam, props['face_edges_draw_fn'])
     end
-  elseif draw_style == draw_mode.FACES then
+  end
+  if draw_style & draw_mode.FACES ~= 0 then
     local sign = -1
     local l = 15
     for i, f in ipairs(self.faces) do
       local evaled_f = self:evaled_face(f)
       l = (16 + sign * i) % 16
-      draw_3d.face(evaled_f, l, true, mult, cam, draw_fn)
+      draw_3d.face(evaled_f, l, true, mult, cam, props['face_draw_fn'])
       sign = -sign
     end
   end

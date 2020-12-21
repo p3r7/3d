@@ -207,9 +207,10 @@ function redraw()
   screen.clear()
   nClock = os.clock()
 
-  model:draw(3, draw_mode.FACES, mult, cam)
-  model:draw(4, draw_mode.WIREFRAME, mult, cam)
-  model:draw(15, draw_mode.POINTS, mult, cam, draw_v_as_circle)
+  model:draw(nil, draw_mode.FACES | draw_mode.WIREFRAME | draw_mode.POINTS, mult, cam,
+             {point_draw_fn = draw_v_as_circle,
+              point_level = 15,
+              line_level = 4})
 
   -- print("drawing took "..os.clock()-nClock)
 
