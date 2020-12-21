@@ -50,7 +50,7 @@ end
 
 function Wireframe:translate_by_vector(trans_vec)
   for a, t in ipairs(trans_vec) do
-    self:translate(a, t)
+    self:translate_axis(a, t)
   end
 end
 
@@ -75,7 +75,7 @@ end
 
 function Wireframe:rotate_by_vector(rot_vec)
   for a, s in ipairs(rot_vec) do
-    self:rotate(a, s)
+    self:rotate_axis(a, s)
   end
 end
 
@@ -93,7 +93,7 @@ end
 
 function Wireframe:draw(l, draw_style, mult, cam, draw_fn)
   l = l or 15
-  draw_style = draw_style or draw_mode.WIRE_FRAME
+  draw_style = draw_style or draw_mode.WIREFRAME
   mult = mult or 64
   cam = cam or {0, 0, 0}
   if draw_style == draw_mode.POINTS then

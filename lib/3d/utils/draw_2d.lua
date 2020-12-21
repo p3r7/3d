@@ -21,6 +21,19 @@ end
 
 
 -- ------------------------------------------------------------------------
+-- CIRCLE
+
+function draw_2d.circle(x, y, r, l)
+  if l then
+    screen.level(l)
+  end
+  screen.move(x + r, y)
+  screen.circle(x, y, r)
+  screen.fill()
+end
+
+
+-- ------------------------------------------------------------------------
 -- LINE
 
 function draw_2d.line(x0, y0, x1, y1, l)

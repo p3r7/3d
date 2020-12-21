@@ -7,7 +7,7 @@ local draw_mode = {}
 
 draw_mode.POINTS = 1
 draw_mode.LINES = 2
-draw_mode.WIRE_FRAME = 2
+draw_mode.WIREFRAME = 2
 draw_mode.FACES = 4
 
 
