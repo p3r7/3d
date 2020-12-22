@@ -1,10 +1,11 @@
 
-
+include('lib/3d/utils/core')
 local model_parse = include('lib/3d/utils/model_parse')
 local model_convert = include('lib/3d/utils/model_convert')
 local vertex_motion = include('lib/3d/utils/vertex_motion')
 local draw_3d = include('lib/3d/utils/draw_3d')
 local draw_mode = include('lib/3d/enums/draw_mode')
+local draw_fx = include('lib/3d/utils/draw_fx')
 
 
 -- ------------------------------------------------------------------------
@@ -91,20 +92,47 @@ end
 -- ------------------------------------------------------------------------
 -- DRAW
 
+function Wireframe:draw_glitch_edges(l, chance_pct, amount_pct, mult, cam, props)
+  local amount = amount_pct
+    and amount_pct * self.vertices_count / 100
+    or self.vertices_count / 2
+
+  local i = 0
+  while i < amount do
+    if rnd(100) < chance_pct then
+      draw_3d.line(self.vertices[flr(rnd(self.vertices_count)) + 1], self.vertices[flr(rnd(self.vertices_count)) + 1], props['line_level'] or l, mult, cam, props['lines_draw_fn'])
+    end
+    i = i + 1
+  end
+end
+
 function Wireframe:draw(l, draw_style, mult, cam, props)
   l = l or 15
   draw_style = draw_style or draw_mode.WIREFRAME
   mult = mult or 64
   cam = cam or {0, 0, 0}
   props = props or {}
+
+  local rnd_draw_pred = props['draw_pct']
+    and draw_fx.make_rnd_pred(props['draw_pct'])
+    or draw_fx.make_always_true_pred()
+
   if draw_style & draw_mode.POINTS ~= 0 then
     for _i, v in ipairs(self.vertices) do
-      draw_3d.point(v, props['point_level'] or l, mult, cam, draw_fn)
+      if rnd_draw_pred() then
+        draw_3d.point(v, props['point_level'] or l, mult, cam, draw_fn)
+      end
     end
   end
   if draw_style & draw_mode.WIREFRAME ~= 0 then
     for _i, line in ipairs(self.edges) do
-      draw_3d.line(self.vertices[line[1]], self.vertices[line[2]], props['line_level'] or l, mult, cam, props['lines_draw_fn'])
+      if rnd_draw_pred() then
+        draw_3d.line(self.vertices[line[1]], self.vertices[line[2]], props['line_level'] or l, mult, cam, props['lines_draw_fn'])
+      end
+    end
+
+    if props['glitch_edge_pct'] then
+      self:draw_glitch_edges(l, props['glitch_edge_pct'], props['glitch_edge_amount_pct'], mult, cam, props)
     end
   end
 end
