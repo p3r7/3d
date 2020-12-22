@@ -2,8 +2,6 @@
 
 Pure Lua 3D lib for norns.
 
-Based on an [example code](https://gist.github.com/Ivoah/477775d13e142b2c89ba) by [@Ivoah](https://github.com/Ivoah) for [PICO-8](https://www.lexaloffle.com/pico-8.php).
-
 ![teapot](https://www.eigenbahn.com/assets/gif/norns_3d_teapot.gif)
 
 
@@ -150,3 +148,21 @@ See the [glitchpercube](./obj_glitchpercube.lua) example.
 <details><summary markdown="span"><b>!!! EPILEPSY WARNING !!!</b></summary>
 <img src="https://www.eigenbahn.com/assets/gif/norns_3d_glitchpercube.gif"/>
 </details>
+
+
+## Limitations
+
+No clean masking support, elements (faces / edges / vertices) are drawn in no specific order.
+
+Basic masking could be enabled tuning the `min_z` drawing property, even though that'll only work properly for [highly symmetrical models](https://en.wikipedia.org/wiki/Polyhedron#Symmetries).
+
+No support for *materials*.
+
+Currently, glitches (conditional drawing, random elements) refresh at the same rate as the element is being drawn. Ideally we should split this "glicthing" logic from the drawing logic for it to be less aggressive.
+
+
+## Acknowledgements
+
+90% of the 3D vertex calculation code is based on an [example](https://gist.github.com/Ivoah/477775d13e142b2c89ba) by [@Ivoah](https://github.com/Ivoah) for [PICO-8](https://www.lexaloffle.com/pico-8.php).
+
+It has been modified
