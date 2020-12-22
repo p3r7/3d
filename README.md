@@ -165,4 +165,4 @@ Currently, glitches (conditional drawing, random elements) refresh at the same r
 
 90% of the 3D vertex calculation code is based on an [example](https://gist.github.com/Ivoah/477775d13e142b2c89ba) by [@Ivoah](https://github.com/Ivoah) for [PICO-8](https://www.lexaloffle.com/pico-8.php).
 
-It has been modified
+It has been modified to rely on a mutating state for better performance and preventing memory consumption to grow out of control (I assume GC tuning is a bit conservative on norns).
