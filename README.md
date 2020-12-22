@@ -119,10 +119,10 @@ Drawing of vertices/edges/faces can be conditional thanks to these props:
 
 When tuned appropriately, this can lead to a nice glitchy effect.
 
-See the [octaglitch](./obj_octaglitch.lua) example (**!!! EPILEPSY WARNING !!!**).
+See the [octaglitch](./obj_octaglitch.lua) example.
 
 <details><summary markdown="span"><b>!!! EPILEPSY WARNING !!!</b></summary>
-![octaglitch](https://www.eigenbahn.com/assets/gif/norns_3d_glitch.gif)
+<img src="https://www.eigenbahn.com/assets/gif/norns_3d_glitch.gif"/>
 </details>
 
 
