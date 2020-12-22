@@ -1,8 +1,11 @@
 # 3d
 
-Pure Lua 3D lib for Norns.
+Pure Lua 3D lib for norns.
 
 Based on an [example code](https://gist.github.com/Ivoah/477775d13e142b2c89ba) by [@Ivoah](https://github.com/Ivoah) for [PICO-8](https://www.lexaloffle.com/pico-8.php).
+
+![teapot](https://www.eigenbahn.com/assets/gif/norns_3d_teapot.gif)
+
 
 ## Description
 
