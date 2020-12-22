@@ -1,4 +1,4 @@
--- glitchpercube.
+-- obj_glitchpercube.
 --
 -- @eigen
 --
