@@ -74,7 +74,7 @@ And can be combined:
 model:draw(level, draw_mode.FACES | draw_mode.WIREFRAME) -- faces + edges
 ```
 
-In this case, independant levels can be specified:
+In this case, independent levels can be specified:
 
 ```lua
 model:draw(level, draw_mode.WIREFRAME | draw_mode.POINTS, nil, nil,
