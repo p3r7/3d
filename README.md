@@ -57,6 +57,8 @@ model:draw(level, draw_mode.FACES, mult, cam)
 
 This is important as `.OBJ` models vary greatly in scale and are not necessarily origin-centered.
 
+See the [teapot](./obj_teapot.lua) (`Polyhedron`) and [wireframe_cube](./wireframe_cube.lua) (`Wireframe`) examples for this basic use-case.
+
 
 #### Drawing modes
 
@@ -81,6 +83,8 @@ model:draw(level, draw_mode.WIREFRAME | draw_mode.POINTS, nil, nil,
            {line_level = 10,
             point_level = 5})
 ```
+
+See the [octagon](./obj_octagon.lua) example to illustrate this use-case.
 
 
 #### Custom drawing function
@@ -108,6 +112,9 @@ Custom drawing function parameter depends of `draw_mode`:
 | ---                | ---                      | ---                                | ---                        |
 | `Wireframe`        | `point_draw_fn(x, y, l)` | `lines_draw_fn(x0, y0, x1, y1, l)` | n/a                        |
 | `Polyhedron`       | `point_draw_fn(x, y, l)` | `face_edges_draw_fn(f_edges, l)`   | `face_draw_fn(f_edges, l)` |
+
+
+See the [octagon](./obj_octagon.lua) example to illustrate this use-case.
 
 
 #### Conditional drawing
@@ -139,3 +146,7 @@ See the [octaglitch](./obj_octaglitch.lua) example.
 | `glitch_edge_amount_pct` | % of total vertices that attempts getting linked |
 
 See the [glitchpercube](./obj_glitchpercube.lua) example.
+
+<details><summary markdown="span"><b>!!! EPILEPSY WARNING !!!</b></summary>
+<img src="https://www.eigenbahn.com/assets/gif/norns_3d_glitchpercube.gif"/>
+</details>
