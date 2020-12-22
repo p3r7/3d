@@ -49,7 +49,7 @@ function draw_3d.line(v1, v2, l, mult, cam, draw_fn)
   draw_fn = draw_fn or draw_2d.line
   local x0, y0 = vertex_motion.project(v1, mult, cam)
   local x1, y1 = vertex_motion.project(v2, mult, cam)
-  draw_fn(x0, y0, x1, y1, col)
+  draw_fn(x0, y0, x1, y1, l)
 end
 
 
