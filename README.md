@@ -121,6 +121,10 @@ When tuned appropriately, this can lead to a nice glitchy effect.
 
 See the [octaglitch](./obj_octaglitch.lua) example (**!!! EPILEPSY WARNING !!!**).
 
+<details><summary markdown="span"><b>!!! EPILEPSY WARNING !!!</b></summary>
+![octaglitch](https://www.eigenbahn.com/assets/gif/norns_3d_glitch.gif)
+</details>
+
 
 #### Glitchy elements
 
