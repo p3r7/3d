@@ -32,8 +32,12 @@ local draw_mode = include('lib/3d/enums/draw_mode')
 -- conf
 
 local fps = 30
+local glitch_rate = 1/4
 
 local model_filepath = "/home/we/dust/code/3d/model/octa-color.obj"
+
+model = Polyhedron.new_from_obj(model_filepath)
+-- model = Wireframe.new_from_obj(model_filepath)
 
 
 -- ------------------------------------------------------------------------
@@ -54,16 +58,23 @@ redraw_clock = clock.run(
     end
 end)
 
+randomize_style_clock = clock.run(
+  function()
+    while true do
+      clock.sleep(glitch_rate)
+      model:randomize_draw_props(draw_mode.FACES | draw_mode.WIREFRAME | draw_mode.POINTS, 50)
+    end
+end)
+
 function cleanup()
   clock.cancel(redraw_clock)
+  clock.cancel(randomize_style_clock)
 end
 
 
 -- ------------------------------------------------------------------------
 -- state
 
-model = Polyhedron.new_from_obj(model_filepath)
--- model = Wireframe.new_from_obj(model_filepath)
 
 
 -- init
@@ -211,7 +222,8 @@ function redraw()
              {point_draw_fn = draw_v_as_circle,
               point_level = 15,
               line_level = 4,
-              draw_pct = 15})
+              -- draw_pct = 15
+  })
 
   -- print("drawing took "..os.clock()-nClock)
 
