@@ -28,6 +28,16 @@ function Polyhedron.new(vertices, faces)
   p.translation = {0,0,0}
   p.rotation = {0,0,0}
 
+  p.vertices_draw_mode = {}
+  for i = 1, p.vertices_count do
+    table.insert(p.vertices_draw_mode, draw_mode.POINTS)
+  end
+
+  p.faces_draw_mode = {}
+  for i = 1, p.faces_count do
+    table.insert(p.faces_draw_mode, draw_mode.FACES | draw_mode.WIREFRAME)
+  end
+
   return p
 end
 
@@ -92,6 +102,42 @@ end
 -- ------------------------------------------------------------------------
 -- DRAW
 
+function Polyhedron:randomize_draw_props(draw_style, draw_pct)
+  draw_pct = draw_pct or false
+
+  local rnd_draw_pred = draw_pct
+    and draw_fx.make_rnd_pred(draw_pct)
+    or draw_fx.make_always_true_pred()
+
+  if draw_style & draw_mode.POINTS then
+    for i = 1, self.vertices_count do
+      if rnd_draw_pred() then
+        self.vertices_draw_mode[i] = draw_mode.POINTS
+      else
+        self.vertices_draw_mode[i] = draw_mode.DISABLED
+      end
+    end
+  end
+
+  if draw_style & draw_mode.WIREFRAME then
+    for i = 1, self.faces_count do
+      if rnd_draw_pred() then
+        self.faces_draw_mode[i] = draw_mode.WIREFRAME
+      else
+        self.faces_draw_mode[i] = draw_mode.DISABLED
+      end
+    end
+  end
+
+  if draw_style & draw_mode.FACES then
+    for i = 1, self.faces_count do
+      if rnd_draw_pred() then
+        self.faces_draw_mode[i] = self.faces_draw_mode[i] | draw_mode.FACES
+      end
+    end
+  end
+end
+
 function Polyhedron:evaled_face(face)
   local evaled_face = {}
   for _i, v in ipairs(face) do
@@ -107,25 +153,26 @@ function Polyhedron:draw(l, draw_style, mult, cam, props)
   cam = cam or {0, 0, 0}
   props = props or {}
 
-  local rnd_draw_pred = props['draw_pct']
-    and draw_fx.make_rnd_pred(props['draw_pct'])
-    or draw_fx.make_always_true_pred()
+  if props['draw_pct'] then
+    self:randomize_draw_props(draw_style, props['draw_pct'])
+  end
 
   local z_draw_pred = (props['min_z'] or props['max_z'])
     and draw_fx.make_vertex_axis_pos_pred(3, props['min_z'], props['max_z'])
     or draw_fx.make_always_true_pred()
 
   if draw_style & draw_mode.POINTS ~= 0 then
-    for _i, v in ipairs(self.vertices) do
-      if z_draw_pred(v) and rnd_draw_pred() then
+    for i, v in ipairs(self.vertices) do
+      if z_draw_pred(v) and self.vertices_draw_mode[i] & draw_mode.POINTS ~= 0 then
         draw_3d.point(v, props['point_level'] or l, mult, cam, props['point_draw_fn'])
       end
     end
   end
   if draw_style & draw_mode.WIREFRAME ~= 0 then
-    for _i, f in ipairs(self.faces) do
+    for i, f in ipairs(self.faces) do
       local evaled_f = self:evaled_face(f)
-      if rnd_draw_pred() and draw_fx.face_axis_pos_pred(z_draw_pred, evaled_f) then
+      if self.faces_draw_mode[i] & draw_mode.WIREFRAME ~= 0
+        and draw_fx.face_axis_pos_pred(z_draw_pred, evaled_f) then
         draw_3d.face(evaled_f, props['line_level'] or l, false, mult, cam, props['face_edges_draw_fn'])
       end
     end
@@ -135,7 +182,8 @@ function Polyhedron:draw(l, draw_style, mult, cam, props)
     local l = 15
     for i, f in ipairs(self.faces) do
       local evaled_f = self:evaled_face(f)
-      if rnd_draw_pred() and draw_fx.face_axis_pos_pred(z_draw_pred, evaled_f) then
+      if self.faces_draw_mode[i] & draw_mode.FACES ~= 0
+        and draw_fx.face_axis_pos_pred(z_draw_pred, evaled_f) then
         l = (16 + sign * i) % 16
         draw_3d.face(evaled_f, l, true, mult, cam, props['face_draw_fn'])
         sign = -sign
