@@ -10,6 +10,18 @@ local vertex_motion = {}
 
 
 -- ------------------------------------------------------------------------
+-- NORMALIZE
+
+function vertex_motion.normalized(v)
+  local max = math.abs(math.max(v[axis.X], v[axis.Y], v[axis.Z]))
+  if max == 0 then
+    return v
+  end
+  return {v[axis.X]/max, v[axis.Y]/max, v[axis.Z]/max}
+end
+
+
+-- ------------------------------------------------------------------------
 -- TRANSLATION
 
 function vertex_motion.translate(v, a, t)
