@@ -1,4 +1,4 @@
--- obj_glitchpercube.
+-- hypercube.
 --
 -- @eigen
 --
@@ -241,9 +241,7 @@ function redraw()
 
   screen.clear()
   nClock = os.clock()
-  model:draw(5, draw_mode.WIREFRAME, mult, cam, {draw_pct = 15,
-                                                 glitch_edge_pct = 25,
-                                                 glitch_edge_amount_pct = 75})
+  model:draw(5, draw_mode.WIREFRAME, mult, cam)
   -- print("drawing took "..os.clock()-nClock)
 
   -- model_s:draw(10, nil, mult, cam)
