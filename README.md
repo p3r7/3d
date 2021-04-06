@@ -166,3 +166,5 @@ Currently, glitches (conditional drawing, random elements) refresh at the same r
 90% of the 3D vertex calculation code is based on an [example](https://gist.github.com/Ivoah/477775d13e142b2c89ba) by [@Ivoah](https://github.com/Ivoah) for [PICO-8](https://www.lexaloffle.com/pico-8.php).
 
 It has been modified to rely on a mutating state for better performance and preventing memory consumption to grow out of control (I assume GC tuning is a bit conservative on norns).
+
+Lowpoly 3D fish models used in `obj_fish.lua` example by [@rkuhlf](https://rkuhlf-assets.itch.io/) ([source](https://www.cgtrader.com/free-3d-models/animals/fish/low-poly-fish-b981402c-4bac-491b-a4d8-6bc91b8e08b0)).
