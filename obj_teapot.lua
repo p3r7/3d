@@ -21,6 +21,7 @@
 -- requires
 
 include('lib/3d/utils/core')
+inspect = include('lib/inspect')
 
 local Polyhedron = include('lib/3d/polyhedron')
 
@@ -33,6 +34,8 @@ local draw_mode = include('lib/3d/enums/draw_mode')
 local fps = 30
 
 local model_filepath = "/home/we/dust/code/3d/model/teapot.obj"
+-- local selected_draw_mode = draw_mode.WIREFRAME
+-- local selected_draw_mode = draw_mode.FACES
 local selected_draw_mode = draw_mode.POINTS
 
 
