@@ -52,27 +52,17 @@ function draw_3d.circle(center_v, r, tilt_v, l, mult, cam, draw_fn)
   cam = cam or {0, 0, 0}
 
   local s = 0.01
-  -- NB: the trick is to make a slightly different copy of the tilt vector and then make the cross product
-  -- this should give us a perpendicular vector, i.e. corresponding to the circle
-  local intersecting_v = table.copy(tilt_v)
-  intersecting_v[1] = intersecting_v[1] + 0.1
 
-  -- tabutil.print(intersecting_v)
+  circle_v = vector_motion.any_perpendicular(tilt_v)
 
-  circle_v = vector_motion.cross_product(
-    {
-      {center_v[axis.X], tilt_v[axis.X]},
-      {center_v[axis.Y], tilt_v[axis.Y]},
-      {center_v[axis.Z], tilt_v[axis.Z]},
-    },
-    {
-      {center_v[axis.X], intersecting_v[axis.X]},
-      {center_v[axis.Y], intersecting_v[axis.Y]},
-      {center_v[axis.Z], intersecting_v[axis.Z]},
-    }
-  )
+  circle_v = vertex_motion.normalized(circle_v, r)
 
-  circle_v = vertex_motion.normalized(circle_v)
+  -- NB: to validate vectors are perpendicular
+  -- local dot_v = vector_motion.dot_product_normalized(tilt_v, circle_v)
+  -- print(inspect(dot_v))
+
+  -- debug: radius vector
+  -- draw_3d.line({0,0,0}, circle_v, l, mult, cam, draw_fn)
 
   for i = 0, 500 do
     draw_3d.point(circle_v, l, mult, cam, draw_fn)
@@ -80,6 +70,14 @@ function draw_3d.circle(center_v, r, tilt_v, l, mult, cam, draw_fn)
     vertex_motion.rotate(circle_v, axis.Y, s * tilt_v[axis.Y])
     vertex_motion.rotate(circle_v, axis.Z, s * tilt_v[axis.Z])
   end
+
+  -- local tilt_v2 = table.copy(tilt_v)
+  -- for i = 0, 500 do
+  --   draw_3d.point(tilt_v2, l, mult, cam, draw_fn)
+  --   vertex_motion.rotate(tilt_v2, axis.X, s * circle_v[axis.X])
+  --   vertex_motion.rotate(tilt_v2, axis.Y, s * circle_v[axis.Y])
+  --   vertex_motion.rotate(tilt_v2, axis.Z, s * circle_v[axis.Z])
+  -- end
 end
 
 

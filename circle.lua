@@ -24,6 +24,8 @@ include('lib/3d/utils/core')
 inspect = include('lib/inspect')
 
 local Cirle = include('lib/3d/circle')
+local Point = include('lib/3d/point')
+local Segment = include('lib/3d/segment')
 
 local draw_mode = include('lib/3d/enums/draw_mode')
 
@@ -64,6 +66,8 @@ end
 -- state
 
 model = Cirle.new(1)
+c_center = Point.new()
+c_tilt = Segment.new(model.tilt)
 
 -- print(inspect(model.faces))
 
@@ -210,6 +214,8 @@ function redraw()
 
   nClock = os.clock()
   model:draw(15, selected_draw_mode, mult, cam)
+  c_center:draw(15, selected_draw_mode, mult, cam)
+  c_tilt:draw(15, selected_draw_mode, mult, cam)
 
   screen.update()
 end
