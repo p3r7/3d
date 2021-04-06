@@ -28,6 +28,16 @@ function Wireframe.new(vertices, edges)
   p.translation = {0,0,0}
   p.rotation = {0,0,0}
 
+  p.vertices_draw_mode = {}
+  for i = 1, p.vertices_count do
+    table.insert(p.vertices_draw_mode, draw_mode.POINTS)
+  end
+
+  p.edges_draw_mode = {}
+  for i = 1, p.edges_count do
+    table.insert(p.edges_draw_mode, draw_mode.WIREFRAME)
+  end
+
   return p
 end
 
@@ -92,6 +102,34 @@ end
 -- ------------------------------------------------------------------------
 -- DRAW
 
+function Wireframe:randomize_draw_props(draw_style, draw_pct)
+  draw_pct = draw_pct or false
+
+  local rnd_draw_pred = draw_pct
+    and draw_fx.make_rnd_pred(draw_pct)
+    or draw_fx.make_always_true_pred()
+
+  if draw_style & draw_mode.POINTS then
+    for i = 1, self.vertices_count do
+      if rnd_draw_pred() then
+        self.vertices_draw_mode[i] = draw_mode.POINTS
+      else
+        self.vertices_draw_mode[i] = draw_mode.DISABLED
+      end
+    end
+  end
+
+  if draw_style & draw_mode.WIREFRAME then
+    for i = 1, self.edges_count do
+      if rnd_draw_pred() then
+        self.edges_draw_mode[i] = draw_mode.WIREFRAME
+      else
+        self.edges_draw_mode[i] = draw_mode.DISABLED
+      end
+    end
+  end
+end
+
 function Wireframe:draw_glitch_edges(l, chance_pct, amount_pct, mult, cam, props)
   local amount = amount_pct
     and amount_pct * self.vertices_count / 100
@@ -113,20 +151,20 @@ function Wireframe:draw(l, draw_style, mult, cam, props)
   cam = cam or {0, 0, 0}
   props = props or {}
 
-  local rnd_draw_pred = props['draw_pct']
-    and draw_fx.make_rnd_pred(props['draw_pct'])
-    or draw_fx.make_always_true_pred()
+  if props['draw_pct'] then
+    self:randomize_draw_props(draw_style, props['draw_pct'])
+  end
 
   if draw_style & draw_mode.POINTS ~= 0 then
-    for _i, v in ipairs(self.vertices) do
-      if rnd_draw_pred() then
-        draw_3d.point(v, props['point_level'] or l, mult, cam, draw_fn)
+    for i, v in ipairs(self.vertices) do
+      if sef.vertices_draw_mode[i] & draw_mode.POINTS ~= 0 then
+        draw_3d.point(v, props['point_level'] or l, mult, cam, props['point_draw_fn'])
       end
     end
   end
   if draw_style & draw_mode.WIREFRAME ~= 0 then
-    for _i, line in ipairs(self.edges) do
-      if rnd_draw_pred() then
+    for i, line in ipairs(self.edges) do
+      if self.faces_draw_mode[i] & draw_mode.WIREFRAME ~= 0 then
         draw_3d.line(self.vertices[line[1]], self.vertices[line[2]], props['line_level'] or l, mult, cam, props['lines_draw_fn'])
       end
     end

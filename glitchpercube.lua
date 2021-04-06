@@ -1,4 +1,4 @@
--- wireframe_cube.
+-- glitchpercube.
 --
 -- @eigen
 --
@@ -23,6 +23,7 @@
 include('lib/3d/utils/core')
 
 local Wireframe = include('lib/3d/wireframe')
+local Sphere = include('lib/3d/sphere')
 
 local draw_mode = include('lib/3d/enums/draw_mode')
 
@@ -58,6 +59,8 @@ end
 -- ------------------------------------------------------------------------
 -- state
 
+model_s = Sphere.new(10)
+
 model = Wireframe.new(
   {{-1,-1,-1}, -- points
     {-1,-1,1},
@@ -75,38 +78,38 @@ model = Wireframe.new(
     {-0.5,0.5,0.5},
     {0.5,0.5,0.5},
     {0.5,0.5,-0.5}},
-  {{1,2}, -- lines
-    {2,3},
-    {3,4},
-    {4,1},
-    {5,6},
-    {6,7},
-    {7,8},
-    {8,5},
-    {1,5},
-    {2,6},
-    {3,7},
-    {4,8},
-    {8+1,8+2}, -- inside
-    {8+2,8+3},
-    {8+3,8+4},
-    {8+4,8+1},
-    {8+5,8+6},
-    {8+6,8+7},
-    {8+7,8+8},
-    {8+8,8+5},
-    {8+1,8+5},
-    {8+2,8+6},
-    {8+3,8+7},
-    {8+4,8+8},
-    {1,9},--
-    {2,10},
-    {3,11},
-    {4,12},
-    {5,13},
-    {6,14},
-    {7,15},
-    {8,16}})
+    {{1,2}, -- lines
+      {2,3},
+      {3,4},
+      {4,1},
+      {5,6},
+      {6,7},
+      {7,8},
+      {8,5},
+      {1,5},
+      {2,6},
+      {3,7},
+      {4,8},
+      {8+1,8+2}, -- inside
+      {8+2,8+3},
+      {8+3,8+4},
+      {8+4,8+1},
+      {8+5,8+6},
+      {8+6,8+7},
+      {8+7,8+8},
+      {8+8,8+5},
+      {8+1,8+5},
+      {8+2,8+6},
+      {8+3,8+7},
+      {8+4,8+8},
+      {1,9},--
+      {2,10},
+      {3,11},
+      {4,12},
+      {5,13},
+      {6,14},
+      {7,15},
+      {8,16}})
 
 -- init
 cam = {0,0,-4} -- Initilise the camera position
@@ -238,8 +241,12 @@ function redraw()
 
   screen.clear()
   nClock = os.clock()
-  model:draw(15, draw_mode.WIREFRAME, mult, cam)
+  model:draw(5, draw_mode.WIREFRAME, mult, cam, {draw_pct = 15,
+                                                 glitch_edge_pct = 25,
+                                                 glitch_edge_amount_pct = 75})
   -- print("drawing took "..os.clock()-nClock)
+
+  -- model_s:draw(10, nil, mult, cam)
 
   screen.update()
 end
