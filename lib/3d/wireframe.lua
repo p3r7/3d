@@ -164,7 +164,7 @@ function Wireframe:draw(l, draw_style, mult, cam, props)
   end
   if draw_style & draw_mode.WIREFRAME ~= 0 then
     for i, line in ipairs(self.edges) do
-      if self.faces_draw_mode[i] & draw_mode.WIREFRAME ~= 0 then
+      if self.edges_draw_mode[i] & draw_mode.WIREFRAME ~= 0 then
         draw_3d.line(self.vertices[line[1]], self.vertices[line[2]], props['line_level'] or l, mult, cam, props['lines_draw_fn'])
       end
     end
