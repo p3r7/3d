@@ -46,26 +46,24 @@ end
 -- CIRCLE
 
 -- NB: we're drawing a cirle by doing a 3D rotation of a point
-function draw_3d.circle(center_v, r, tilt_v, l, mult, cam, draw_fn)
+function draw_3d.circle(center_v, r, tilt_v, r_v, l, mult, cam, draw_fn)
   l = l or 15
   mult = mult or 64
   cam = cam or {0, 0, 0}
 
   local s = 0.01
-
-  circle_v = vector_motion.any_perpendicular(tilt_v)
-
-  circle_v = vertex_motion.normalized(circle_v, r)
-
-  -- NB: to validate vectors are perpendicular
-  -- local dot_v = vector_motion.dot_product_normalized(tilt_v, circle_v)
-  -- print(inspect(dot_v))
+  local circle_v = table.copy(r_v)
 
   -- debug: radius vector
-  -- draw_3d.line({0,0,0}, circle_v, l, mult, cam, draw_fn)
+  -- draw_3d.line({0,0,0}, r_v, l, mult, cam, draw_fn)
 
-  for i = 0, 500 do
-    draw_3d.point(circle_v, l, mult, cam, draw_fn)
+
+  local cc_v = {}
+  for i = 0, 100 do
+    cc_v[1] = center_v[1] + circle_v[1]
+    cc_v[2] = center_v[2] + circle_v[2]
+    cc_v[3] = center_v[3] + circle_v[3]
+    draw_3d.point(cc_v, l, mult, cam, draw_fn)
     vertex_motion.rotate(circle_v, axis.X, s * tilt_v[axis.X])
     vertex_motion.rotate(circle_v, axis.Y, s * tilt_v[axis.Y])
     vertex_motion.rotate(circle_v, axis.Z, s * tilt_v[axis.Z])

@@ -1,6 +1,8 @@
 
 
 local axis = include('lib/3d/enums/axis')
+
+util = require("util")
 include('lib/3d/utils/core')
 
 
@@ -12,12 +14,39 @@ local vertex_motion = {}
 -- ------------------------------------------------------------------------
 -- NORMALIZE
 
-function vertex_motion.normalized(v)
-  local max = math.abs(math.max(v[axis.X], v[axis.Y], v[axis.Z]))
-  if max == 0 then
+function vertex_motion.normalized(v, max)
+  max = max or 1
+  local length = math.sqrt(v[axis.X]^2 + v[axis.Y]^2 + v[axis.Z]^2)
+  if length == 0 then
     return v
   end
-  return {v[axis.X]/max, v[axis.Y]/max, v[axis.Z]/max}
+  local ratio = length/max
+  return {v[axis.X]/ratio, v[axis.Y]/ratio, v[axis.Z]/ratio}
+end
+
+
+-- ------------------------------------------------------------------------
+-- MODIFICATION
+
+function vertex_motion.inverted(v)
+  local inv =  table.copy(v)
+  inv[1] = - inv[1]
+  inv[2] = - inv[2]
+  inv[3] = - inv[3]
+  return inv
+end
+
+
+-- ------------------------------------------------------------------------
+-- INTERPOLATION
+
+-- Outputs interpolated vector going from % PERCENT of V2 from V1
+function vertex_motion.interpolated(v1, v2, percent)
+  local v = {}
+  for i=1, 3 do
+    v[i] = util.linlin(0, 100, v1[i], v2[i], percent)
+  end
+  return v
 end
 
 
